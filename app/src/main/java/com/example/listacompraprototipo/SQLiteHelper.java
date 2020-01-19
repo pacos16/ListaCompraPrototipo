@@ -1,10 +1,18 @@
 package com.example.listacompraprototipo;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import com.example.listacompraprototipo.model.Categoria;
+import com.example.listacompraprototipo.model.ListaCompra;
+import com.example.listacompraprototipo.model.Producto;
+import com.example.listacompraprototipo.model.ProductoLista;
+
+import java.util.ArrayList;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
     //Singleton
@@ -21,7 +29,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String CREATE_CATEGORIAS ="CREATE TABLE Categorias (nombre VARCHAR (30) PRIMARY KEY, imagen INTEGER);";
     private static final String CREATE_PRODUCTOS ="CREATE TABLE Productos (nombre STRING PRIMARY KEY, categoria VARCHAR REFERENCES Categorias (Nombre), image INTEGER);";
     private static final String CREATE_LISTAS ="CREATE TABLE ListasCompra (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre STRING);";
-    private static final String CREATE_ITEM_LISTA ="CREATE TABLE ItemsListaCompra (id INTEGER PRIMARY KEY AUTOINCREMENT, producto STRING REFERENCES Productos (nombre), idLista INTEGER REFERENCES ListasCompra (id) ON DELETE CASCADE ON UPDATE CASCADE, cantidad INTEGER, comprado BOOLEAN);";
+    private static final String CREATE_ITEM_LISTA ="CREATE TABLE ItemsListaCompra (id INTEGER PRIMARY KEY , producto STRING REFERENCES Productos (nombre), idLista INTEGER REFERENCES ListasCompra (id) ON DELETE CASCADE ON UPDATE CASCADE, cantidad INTEGER, comprado BOOLEAN);";
     private static final String INSERT_CATEGORIAS ="INSERT INTO Categorias (Nombre, imagen) VALUES ('Quesos', 0x1F9C0 );\n" +
             "INSERT INTO Categorias (Nombre, imagen) VALUES ('Carnes y aves',0x1F357 );\n" +
             "INSERT INTO Categorias (Nombre, imagen) VALUES ('Frutas y vegetales', 0x1F34E);\n" +
@@ -44,6 +52,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         super(context, dbName, null,dbVersion);
     }
 
+    private ArrayList<Categoria> categorias;
+    private ArrayList<Producto> productos;
+    private ArrayList<ListaCompra> listas;
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -63,5 +76,79 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     }
 
+
+    public boolean cargarDatos(){
+        SQLiteDatabase db= this.getWritableDatabase();
+        //Cargar categorias
+        categorias=new ArrayList<>();
+        String[] camposCategorias={"nombre","imagen"};
+        Cursor c=db.rawQuery("SELECT ?,? FROM Categoria;",camposCategorias);
+        if(c.moveToFirst()){
+            do{
+                String s= c.getString(0);
+                int imagen=c.getInt(1);
+                categorias.add(new Categoria(s,imagen));
+            }while (c.moveToNext());
+        }
+        c.close();
+        //Productos
+        productos=new ArrayList<>();
+        String[] camposProductos={"nombre","categoria"};
+        c=db.rawQuery("SELECT ?,? FROM productos",camposProductos);
+        if(c.moveToFirst()){
+            do{
+                String nombreProd= c.getString(0);
+                String catProd=c.getString(1);
+                Categoria categoriaProducto=null;
+                for (Categoria feCategory:categorias
+                     ) {
+                    if(feCategory.getNombre().equals(catProd)){
+                        categoriaProducto=feCategory;
+                    }
+                }
+                productos.add(new Producto(nombreProd,categoriaProducto));
+            }while (c.moveToNext());
+        }
+
+        //Listas
+        listas=new ArrayList<>();
+        String[] camposLista={"id","nombre"};
+        c=db.rawQuery("SELECT ?,? FROM ListasCompra",camposLista);
+        if(c.moveToFirst()){
+            do{
+                int idLista=c.getInt(0);
+                String nomLista=c.getString(1);
+                listas.add(new ListaCompra(idLista,nomLista));
+            }while (c.moveToNext());
+        }
+
+        //productos lista
+
+        for (ListaCompra feLista:listas
+             ) {
+            String[] argumentosListas={String.valueOf(feLista.getId())};
+            c=db.rawQuery("SELECT id, producto, idLista, cantidad, comprado FROM ItemsListaCompra where idLista=?",argumentosListas);
+            if (c.moveToFirst()){
+                do {
+                    int idProdLista=c.getInt(0);
+                    String nombreProductoLista=c.getString(1);
+                    int cantidadProducto= c.getInt(3);
+                    boolean comprado=c.getInt(4)>0;
+                    Producto p= null;
+                    for (Producto feProd:productos
+                         ) {
+                        if(nombreProductoLista.equals(p.getNombre())){
+                            p=feProd;
+                        }
+                    }
+                    feLista.addProducto(new ProductoLista(idProdLista,p,cantidadProducto,comprado));
+                }while (c.moveToNext());
+            }
+        }
+        return true;
+    }
+
+
+    
 
 }
