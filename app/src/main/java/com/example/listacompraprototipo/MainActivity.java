@@ -16,15 +16,17 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private SQLiteHelper dbHelper;
+    SQLiteHelper helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        dbHelper=SQLiteHelper.getInstance(this);
-        SQLiteDatabase sqLiteDatabase= dbHelper.getReadableDatabase();
+        helper= SQLiteHelper.getInstance(this);
+        helper.cargarDatos();
+
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
