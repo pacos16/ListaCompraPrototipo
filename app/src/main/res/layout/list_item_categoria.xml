@@ -11,33 +11,18 @@
         android:orientation="horizontal"
         android:weightSum="100">
 
-        <CheckBox
-            android:id="@+id/cbComprado"
+        <TextView
+            android:id="@+id/tvEmojiCat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tvNombreProdLista"
+            android:id="@+id/tvCategoria"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="70"
+            android:layout_weight="90"
             android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/tvCantidadProdLista"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/tvEmojiProductoLista"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:textSize="24sp" />
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

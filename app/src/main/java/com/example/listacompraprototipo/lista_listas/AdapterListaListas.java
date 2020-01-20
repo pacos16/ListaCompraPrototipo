@@ -1,4 +1,4 @@
-package com.example.listacompraprototipo;
+package com.example.listacompraprototipo.lista_listas;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.listacompraprototipo.R;
 import com.example.listacompraprototipo.model.ListaCompra;
 
 import java.util.ArrayList;

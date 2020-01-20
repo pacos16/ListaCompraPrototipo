@@ -1,7 +1,7 @@
 package com.example.listacompraprototipo.model;
 
 public class ProductoLista extends Producto {
-
+    private static int currentID;
     private int id;
     private Producto producto;
     private int cantidad;
@@ -9,11 +9,22 @@ public class ProductoLista extends Producto {
 
     public ProductoLista( int id, Producto producto, int cantidad, boolean comprado) {
         super(producto);
+        if(id>=currentID) currentID=id+1;
         this.id = id;
         this.producto=producto;
         this.cantidad = cantidad;
         this.comprado = comprado;
     }
+
+    public ProductoLista(Producto producto){
+        super(producto);
+        id=currentID;
+        currentID++;
+        this.producto=producto;
+        this.cantidad=1;
+        this.comprado=false;
+    }
+
 
     public int getId() {
         return id;

@@ -1,4 +1,4 @@
-package com.example.listacompraprototipo;
+package com.example.listacompraprototipo.lista_compra;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.listacompraprototipo.R;
 import com.example.listacompraprototipo.model.ListaCompra;
 import com.example.listacompraprototipo.model.ProductoLista;
 
-import java.util.ArrayList;
+
 
 public class AdapterLista extends RecyclerView.Adapter<AdapterLista.ProductosListaViewHolder> {
     private ListaCompra listaCompra;
@@ -45,14 +46,14 @@ public class AdapterLista extends RecyclerView.Adapter<AdapterLista.ProductosLis
         private TextView tvProductoLista;
         private TextView tvCantidadProductoLista;
         private CheckBox cbComprado;
-        private ImageView ivMinus;
+        private TextView tvEmoji;
 
         public ProductosListaViewHolder(@NonNull View itemView) {
             super(itemView);
             tvProductoLista=itemView.findViewById(R.id.tvNombreProdLista);
             tvCantidadProductoLista=itemView.findViewById(R.id.tvCantidadProdLista);
             cbComprado=itemView.findViewById(R.id.cbComprado);
-            ivMinus=itemView.findViewById(R.id.ivMinus);
+            tvEmoji=itemView.findViewById(R.id.tvEmojiProductoLista);
 
 
 
@@ -64,6 +65,7 @@ public class AdapterLista extends RecyclerView.Adapter<AdapterLista.ProductosLis
             tvProductoLista.setText(productoLista.getProducto().getNombre());
             tvCantidadProductoLista.setText(String.valueOf(productoLista.getCantidad()));
             cbComprado.setChecked(productoLista.isComprado());
+            tvEmoji.setText(new String(Character.toChars(productoLista.getCategoria().getImage())));
             cbComprado.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

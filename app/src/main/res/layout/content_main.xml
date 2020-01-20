@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/frListado"
-        android:name="com.example.listacompraprototipo.FragmentListaListas"
+        android:name="com.example.listacompraprototipo.lista_listas.FragmentListaListas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </FrameLayout>

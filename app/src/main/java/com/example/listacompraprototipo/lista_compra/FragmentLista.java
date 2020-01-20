@@ -1,4 +1,4 @@
-package com.example.listacompraprototipo;
+package com.example.listacompraprototipo.lista_compra;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.listacompraprototipo.R;
+import com.example.listacompraprototipo.SQLiteHelper;
+import com.example.listacompraprototipo.lista_listas.FragmentListaListas;
 import com.example.listacompraprototipo.model.ListaCompra;
 
 public class FragmentLista extends Fragment {

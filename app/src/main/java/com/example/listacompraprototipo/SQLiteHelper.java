@@ -1,5 +1,6 @@
 package com.example.listacompraprototipo;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -173,5 +174,17 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     public ArrayList<ListaCompra> getListas() {
         return listas;
+    }
+
+    public void addProductoLista(ProductoLista productoLista, ListaCompra listaCompra){
+        listaCompra.addProducto(productoLista);
+        SQLiteDatabase db=getWritableDatabase();
+        ContentValues nuevoItem=new ContentValues();
+        nuevoItem.put("id",productoLista.getId());
+        nuevoItem.put("producto",productoLista.getProducto().getNombre());
+        nuevoItem.put("idLista",listaCompra.getId());
+        nuevoItem.put("cantidad",productoLista.getCantidad());
+        nuevoItem.put("comprado",productoLista.isComprado());
+        db.insert("ItemsListaCompra",null,nuevoItem);
     }
 }

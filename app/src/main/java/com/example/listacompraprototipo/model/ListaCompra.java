@@ -29,8 +29,11 @@ public class ListaCompra {
     }
 
     public boolean addProducto(ProductoLista productoLista){
-
         return productos.add(productoLista);
+    }
+
+    public boolean removeProducto(ProductoLista productoLista){
+        return productos.remove(productoLista);
     }
 
     public String getNombre() {

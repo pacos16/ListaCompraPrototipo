@@ -3,41 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:weightSum="100">
 
-        <CheckBox
-            android:id="@+id/cbComprado"
+        <TextView
+            android:id="@+id/tvEmoji"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="10"
+            android:layout_weight="15"
+            android:gravity="center"
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tvNombreProdLista"
+            android:id="@+id/tvNombreProd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="70"
+            android:layout_weight="50"
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tvCantidadProdLista"
+            android:id="@+id/tvAñadidoCantidad"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:textSize="24sp" />
+            android:layout_weight="20"
+            android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tvEmojiProductoLista"
+        <ImageView
+            android:id="@+id/ivRemoveProd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:textSize="24sp" />
-
+            android:layout_gravity="center"
+            android:layout_weight="15"
+            app:srcCompat="@drawable/baseline_remove_black_18dp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

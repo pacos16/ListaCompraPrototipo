@@ -19,7 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListActivity"></activity>
+        <activity android:name=".lista_compra.ListActivity"></activity>
+        <activity android:name=".lista_productos_categorias.ProductCategoryActivity"></activity>
+
     </application>
 
 </manifest>

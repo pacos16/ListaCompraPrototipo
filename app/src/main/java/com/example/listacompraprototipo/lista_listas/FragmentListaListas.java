@@ -1,4 +1,4 @@
-package com.example.listacompraprototipo;
+package com.example.listacompraprototipo.lista_listas;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.listacompraprototipo.lista_compra.ListActivity;
+import com.example.listacompraprototipo.R;
+import com.example.listacompraprototipo.SQLiteHelper;
 import com.example.listacompraprototipo.model.ListaCompra;
 
 import java.util.ArrayList;
@@ -48,7 +51,7 @@ public class FragmentListaListas extends Fragment implements IListaListener {
 
     @Override
     public void onListaSeleccionada(int posicion) {
-        Intent i=new Intent(getContext(),ListActivity.class);
+        Intent i=new Intent(getContext(), ListActivity.class);
         i.putExtra(POSICION_LISTA,posicion);
         startActivity(i);
     }
