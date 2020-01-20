@@ -40,4 +40,11 @@ public class ListaCompra {
     public int getId() {
         return id;
     }
+    public int getSize(){
+        return productos.size();
+    }
+
+    public ArrayList<ProductoLista> getProductos() {
+        return productos;
+    }
 }

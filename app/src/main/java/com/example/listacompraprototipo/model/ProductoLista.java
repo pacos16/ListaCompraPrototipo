@@ -10,6 +10,7 @@ public class ProductoLista extends Producto {
     public ProductoLista( int id, Producto producto, int cantidad, boolean comprado) {
         super(producto);
         this.id = id;
+        this.producto=producto;
         this.cantidad = cantidad;
         this.comprado = comprado;
     }

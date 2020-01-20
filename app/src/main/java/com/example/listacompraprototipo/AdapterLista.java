@@ -1,63 +1,75 @@
 package com.example.listacompraprototipo;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listacompraprototipo.model.ListaCompra;
+import com.example.listacompraprototipo.model.ProductoLista;
 
 import java.util.ArrayList;
 
+public class AdapterLista extends RecyclerView.Adapter<AdapterLista.ProductosListaViewHolder> {
+    private ListaCompra listaCompra;
 
-public class AdapterLista extends RecyclerView.Adapter<AdapterLista.ListaViewHolder> {
-
-    private Context context;
-    private ArrayList<ListaCompra> listas;
-
-    public AdapterLista(Context context, ArrayList<ListaCompra> listas) {
-        this.context = context;
-        this.listas = listas;
+    public AdapterLista(ListaCompra listaCompra){
+        this.listaCompra=listaCompra;
     }
 
     @NonNull
     @Override
-    public ListaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProductosListaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_list_lista,parent,false);
-
-        return new ListaViewHolder(v);
+                .inflate(R.layout.item_list_producto_lista,parent,false);
+        return new ProductosListaViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListaViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductosListaViewHolder holder, int position) {
         holder.bind(position);
     }
 
     @Override
     public int getItemCount() {
-        return listas.size();
+        return listaCompra.getProductos().size();
     }
 
-    public class ListaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ProductosListaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private TextView tvNombreLista;
-        private TextView tvCantidadProductos;
-        public ListaViewHolder(@NonNull View itemView) {
+        private TextView tvProductoLista;
+        private TextView tvCantidadProductoLista;
+        private CheckBox cbComprado;
+        private ImageView ivMinus;
+
+        public ProductosListaViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvNombreLista= itemView.findViewById(R.id.tvNombreLista);
-            tvCantidadProductos= itemView.findViewById(R.id.tvCantidadProductosLista);
+            tvProductoLista=itemView.findViewById(R.id.tvNombreProdLista);
+            tvCantidadProductoLista=itemView.findViewById(R.id.tvCantidadProdLista);
+            cbComprado=itemView.findViewById(R.id.cbComprado);
+            ivMinus=itemView.findViewById(R.id.ivMinus);
+
+
 
             itemView.setOnClickListener(this);
         }
 
         public void bind(int position){
-            ListaCompra listaCompra=listas.get(position);
-            tvNombreLista.setText(listaCompra.getNombre());
+            ProductoLista productoLista=listaCompra.getProductos().get(position);
+            tvProductoLista.setText(productoLista.getProducto().getNombre());
+            tvCantidadProductoLista.setText(String.valueOf(productoLista.getCantidad()));
+            cbComprado.setChecked(productoLista.isComprado());
+            cbComprado.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
 
         @Override
@@ -65,4 +77,5 @@ public class AdapterLista extends RecyclerView.Adapter<AdapterLista.ListaViewHol
 
         }
     }
+
 }

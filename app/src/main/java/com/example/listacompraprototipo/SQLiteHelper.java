@@ -153,7 +153,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                             p=feProd;
                         }
                     }
-                    feLista.addProducto(new ProductoLista(idProdLista,p,cantidadProducto,comprado));
+                    if (p!=null) {
+                        feLista.addProducto(new ProductoLista(idProdLista, p, cantidadProducto, comprado));
+                    }
                 }while (c.moveToNext());
             }
         }
