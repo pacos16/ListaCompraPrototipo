@@ -10,18 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listacompraprototipo.R;
-import com.example.listacompraprototipo.model.ProductoAux;
+import com.example.listacompraprototipo.model.ProductoLista;
 
 import java.util.ArrayList;
 
 
 public class AdapterProductos extends RecyclerView.Adapter<AdapterProductos.ProductosViewHolder> {
 
-    private ArrayList<ProductoAux> productos;
+    private ArrayList<ProductoLista> productos;
     private IAddProductoListener listener;
     private IRemoveProductoListener listenerRemove;
 
-    public AdapterProductos(ArrayList<ProductoAux> productos, IAddProductoListener listener,
+    public AdapterProductos(ArrayList<ProductoLista> productos, IAddProductoListener listener,
                             IRemoveProductoListener listenerRemove) {
         this.productos = productos;
         this.listener=listener;
@@ -64,9 +64,9 @@ public class AdapterProductos extends RecyclerView.Adapter<AdapterProductos.Prod
         }
 
         public void bind(final int position){
-            ProductoAux p= productos.get(position);
-            tvNombreProducto.setText(p.getProducto().getNombre());
-            int unicode=p.getProducto().getCategoria().getImage();
+            ProductoLista p= productos.get(position);
+            tvNombreProducto.setText(p.getNombre());
+            int unicode=p.getCategoria().getImage();
             tvEmojiProducto.setText(new String(Character.toChars(unicode)));
             if(p.getCantidad()==0) {
                 tvCantidadProducto.setVisibility(View.INVISIBLE);
@@ -83,7 +83,9 @@ public class AdapterProductos extends RecyclerView.Adapter<AdapterProductos.Prod
             ivRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listenerRemove.onRemoveProducto(productos.get(position).getProducto());
+                    if(productos.get(position).getCantidad()>0) {
+                        listenerRemove.onRemoveProducto(productos.get(position));
+                    }
                 }
             });
 
@@ -92,8 +94,8 @@ public class AdapterProductos extends RecyclerView.Adapter<AdapterProductos.Prod
 
         @Override
         public void onClick(View v) {
-            ProductoAux producto= productos.get(getAdapterPosition());
-            listener.onProductoSelecionado(producto.getProducto());
+            ProductoLista producto= productos.get(getAdapterPosition());
+            listener.onProductoSelecionado(producto);
             producto.setCantidad(productos.get(getAdapterPosition()).getCantidad()+1);
             notifyDataSetChanged();
         }

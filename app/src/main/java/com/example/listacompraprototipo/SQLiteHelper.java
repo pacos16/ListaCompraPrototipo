@@ -15,6 +15,12 @@ import com.example.listacompraprototipo.model.ProductoLista;
 
 import java.util.ArrayList;
 
+/**
+ * SqlHelper, con esta clase vamos a cargar y controlar todos los datos de nuestra aplicacion.
+ * todos los datos persistentes y los datos comunes entre las diversas activities de nuestro
+ * proyecto son tratados aquí.
+ * Para ello aplicamos singleton.
+ */
 public class SQLiteHelper extends SQLiteOpenHelper {
     //Singleton
     private static SQLiteHelper sqlHelper=null;
@@ -91,7 +97,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     }
 
-
+    /**
+     * Funcion principal de carga de datos desde la SQLiteBD
+     * importa el orden en la carga para poder construir correctamente todos los objetos
+     * @return
+     */
     public boolean cargarDatos(){
         SQLiteDatabase db= this.getReadableDatabase();
         //Cargar categorias
@@ -181,6 +191,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return listas;
     }
 
+    /**
+     * Esta funcion comprueba que el proudcto esta en la lista. Si esta, añade uno a su valor
+     * si no lo encuentra crea un nuevo producto lista y lo anyade a las dos bases de datos
+     * @param producto
+     * @param listaCompra
+     */
     public void addProductoLista(Producto producto, ListaCompra listaCompra){
         boolean encontrado=false;
         ProductoLista productoLista=null;
@@ -189,7 +205,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
        while (!encontrado && contador<listaCompra.getProductos().size()){
 
            ProductoLista pl=listaCompra.getProductos().get(contador);
-           if(pl.getProducto().equals(producto)){
+           if(pl.getNombre().equals(producto.getNombre())){
                productoLista=pl;
                encontrado=true;
            }
@@ -204,7 +220,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
            ContentValues nuevoItem=new ContentValues();
            nuevoItem.put("id",productoLista.getId());
-           nuevoItem.put("producto",productoLista.getProducto().getNombre());
+           nuevoItem.put("producto",productoLista.getNombre());
            nuevoItem.put("idLista",listaCompra.getId());
            nuevoItem.put("cantidad",productoLista.getCantidad());
            nuevoItem.put("comprado",productoLista.isComprado());
@@ -215,6 +231,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 
     }
+
+    /**
+     * Esta funcion modifica actualiza la cantidad del producto en la lista especificada
+     * solo se usa para sumar 1 con lo que sera refactorizada en breves.
+     * @param productoLista
+     * @param sumaResta
+     */
     public void modificarCantidadProductoDB(ProductoLista productoLista,int sumaResta){
         productoLista.setCantidad(productoLista.getCantidad()+sumaResta);
         SQLiteDatabase db=getWritableDatabase();
@@ -226,6 +249,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     }
 
+
+    /**
+     * Esta funcion asigna valor al booleano comprado de la base de datos.
+     * Actua sobre la tabla ItemsListaCompra
+     * @param productoLista
+     * @param marcar
+     */
     public void marcarDesmarcarProducto(ProductoLista productoLista,boolean marcar){
         productoLista.setComprado(marcar);
         SQLiteDatabase db=getWritableDatabase();
@@ -241,9 +271,26 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         return null;
     }
+    /*
+    public void removeProducto(ProductoAux p, ListaCompra listaCompra){
+        //caso update
+        if(p.getCantidad()>1){
+                p.setCantidad(p.getCantidad()-1);
+            SQLiteDatabase db=getWritableDatabase();
+            ContentValues values =new ContentValues();
+            String[] args={String.valueOf(productoLista.getId())};
+            values.put("comprado",productoLista.isComprado());
+            db.update("ItemsListaCompra",values,"id=?",args);
+            db.close();
 
-    public void removeProducto(Producto p,ListaCompra listaCompra){
+        //caso remove
+        } else if( p.getCantidad()==1){
+            p.setCantidad(0);
+
+        }
 
     }
+
+     */
 
 }

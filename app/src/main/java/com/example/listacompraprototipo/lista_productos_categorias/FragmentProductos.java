@@ -16,7 +16,6 @@ import com.example.listacompraprototipo.R;
 import com.example.listacompraprototipo.SQLiteHelper;
 import com.example.listacompraprototipo.model.ListaCompra;
 import com.example.listacompraprototipo.model.Producto;
-import com.example.listacompraprototipo.model.ProductoAux;
 import com.example.listacompraprototipo.model.ProductoLista;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class FragmentProductos extends Fragment implements IAddProductoListener,
     private ListaCompra listaCompra;
     private RecyclerView rvProductos;
     private AdapterProductos adapterProductos;
-    private ArrayList<ProductoAux> productosAux;
+    private ArrayList<ProductoLista> productosLista;
 
     public FragmentProductos(ArrayList<Producto> productos, ListaCompra listaCompra) {
         this.productos = productos;
@@ -52,7 +51,7 @@ public class FragmentProductos extends Fragment implements IAddProductoListener,
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         rvProductos=getActivity().findViewById(R.id.rvProductos);
-        productosAux=new ArrayList<>();
+        productosLista =new ArrayList<>();
         ProductoLista productoLista;
         for (int i=0;i<productos.size();i++
              ) {
@@ -65,14 +64,15 @@ public class FragmentProductos extends Fragment implements IAddProductoListener,
             }
 
             if(productoLista==null){
-                productosAux.add(new ProductoAux(productos.get(i),0));
-            }else {
-                productosAux.add(new ProductoAux(productos.get(i),productoLista.getCantidad()));
+                productosLista.add(new ProductoLista(-1,productos.get(i),0,false));
+             }else {
+                productosLista.add(new ProductoLista(productoLista.getId(),
+                        productoLista,productoLista.getCantidad(),productoLista.isComprado()));
             }
 
         }
 
-        adapterProductos=new AdapterProductos(productosAux,this,this);
+        adapterProductos=new AdapterProductos(productosLista,this,this);
         LinearLayoutManager layoutManager=new LinearLayoutManager
                 (this.getContext(),LinearLayoutManager.VERTICAL,false);
         DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(rvProductos.getContext(),
@@ -94,7 +94,7 @@ public class FragmentProductos extends Fragment implements IAddProductoListener,
     }
 
     @Override
-    public void onRemoveProducto(Producto p) {
+    public void onRemoveProducto(ProductoLista productoLista) {
 
     }
 }

@@ -10,8 +10,8 @@ public class ProductoLista extends Producto {
     public ProductoLista( int id, Producto producto, int cantidad, boolean comprado) {
         super(producto);
         if(id>=currentID) currentID=id+1;
+
         this.id = id;
-        this.producto=producto;
         this.cantidad = cantidad;
         this.comprado = comprado;
     }
@@ -19,11 +19,11 @@ public class ProductoLista extends Producto {
     public ProductoLista(Producto producto){
         super(producto);
         id=currentID;
-        currentID++;
-        this.producto=producto;
+        currentID++;this.producto=producto;
         this.cantidad=1;
         this.comprado=false;
     }
+
 
 
     public int getId() {
@@ -34,13 +34,6 @@ public class ProductoLista extends Producto {
         this.id = id;
     }
 
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
 
     public int getCantidad() {
         return cantidad;
