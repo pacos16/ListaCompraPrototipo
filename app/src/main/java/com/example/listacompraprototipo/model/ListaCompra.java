@@ -29,6 +29,7 @@ public class ListaCompra {
     }
 
     public boolean addProducto(ProductoLista productoLista){
+
         return productos.add(productoLista);
     }
 

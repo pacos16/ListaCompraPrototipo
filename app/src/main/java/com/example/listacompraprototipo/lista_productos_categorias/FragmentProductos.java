@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listacompraprototipo.R;
+import com.example.listacompraprototipo.SQLiteHelper;
 import com.example.listacompraprototipo.model.ListaCompra;
 import com.example.listacompraprototipo.model.Producto;
 
@@ -23,6 +24,7 @@ public class FragmentProductos extends Fragment implements IProductoListener{
     private ArrayList<Producto> productos;
     private ListaCompra listaCompra;
     private RecyclerView rvProductos;
+    private AdapterProductos adapterProductos;
 
     public FragmentProductos(ArrayList<Producto> productos, ListaCompra listaCompra) {
         this.productos = productos;
@@ -36,10 +38,17 @@ public class FragmentProductos extends Fragment implements IProductoListener{
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        adapterProductos.notifyDataSetChanged();
+
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         rvProductos=getActivity().findViewById(R.id.rvProductos);
-        AdapterProductos adapterProductos=new AdapterProductos(productos,this);
+        adapterProductos=new AdapterProductos(productos,this);
         LinearLayoutManager layoutManager=new LinearLayoutManager
                 (this.getContext(),LinearLayoutManager.VERTICAL,false);
         DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(rvProductos.getContext(),
@@ -53,6 +62,10 @@ public class FragmentProductos extends Fragment implements IProductoListener{
 
     @Override
     public void onProductoSelecionado(int posicion) {
+
+
+     SQLiteHelper.getInstance(this.getContext())
+             .addProductoLista(productos.get(posicion),listaCompra);
 
     }
 }

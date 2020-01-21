@@ -20,6 +20,7 @@ import com.example.listacompraprototipo.model.ListaCompra;
 public class FragmentLista extends Fragment {
     private ListaCompra listaCompra;
     private RecyclerView rvProductosLista;
+    private AdapterLista adapterLista;
 
     @Nullable
     @Override
@@ -35,7 +36,7 @@ public class FragmentLista extends Fragment {
         if(posicion!=-1) {
             listaCompra = SQLiteHelper.getInstance(getContext()).getListas().get(posicion);
         }
-        AdapterLista adapterLista=new AdapterLista(listaCompra);
+        adapterLista=new AdapterLista(listaCompra,this.getContext());
         rvProductosLista=getActivity().findViewById(R.id.rvProductosLista);
         rvProductosLista.setAdapter(adapterLista);
         LinearLayoutManager layoutManager= new LinearLayoutManager(
@@ -44,5 +45,11 @@ public class FragmentLista extends Fragment {
                 layoutManager.getOrientation());
         rvProductosLista.addItemDecoration(dividerItemDecoration);
         rvProductosLista.setLayoutManager(layoutManager);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapterLista.notifyDataSetChanged();
     }
 }

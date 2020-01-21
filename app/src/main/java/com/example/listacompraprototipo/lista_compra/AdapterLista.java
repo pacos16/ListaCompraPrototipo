@@ -1,16 +1,19 @@
 package com.example.listacompraprototipo.lista_compra;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listacompraprototipo.R;
+import com.example.listacompraprototipo.SQLiteHelper;
 import com.example.listacompraprototipo.model.ListaCompra;
 import com.example.listacompraprototipo.model.ProductoLista;
 
@@ -18,9 +21,11 @@ import com.example.listacompraprototipo.model.ProductoLista;
 
 public class AdapterLista extends RecyclerView.Adapter<AdapterLista.ProductosListaViewHolder> {
     private ListaCompra listaCompra;
+    private Context context;
 
-    public AdapterLista(ListaCompra listaCompra){
+    public AdapterLista(ListaCompra listaCompra,Context context){
         this.listaCompra=listaCompra;
+        this.context=context;
     }
 
     @NonNull
@@ -35,6 +40,10 @@ public class AdapterLista extends RecyclerView.Adapter<AdapterLista.ProductosLis
     public void onBindViewHolder(@NonNull ProductosListaViewHolder holder, int position) {
         holder.bind(position);
     }
+    public void dataChanged(){
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getItemCount() {
@@ -61,7 +70,7 @@ public class AdapterLista extends RecyclerView.Adapter<AdapterLista.ProductosLis
         }
 
         public void bind(int position){
-            ProductoLista productoLista=listaCompra.getProductos().get(position);
+            final ProductoLista productoLista=listaCompra.getProductos().get(position);
             tvProductoLista.setText(productoLista.getProducto().getNombre());
             tvCantidadProductoLista.setText(String.valueOf(productoLista.getCantidad()));
             cbComprado.setChecked(productoLista.isComprado());
@@ -69,7 +78,15 @@ public class AdapterLista extends RecyclerView.Adapter<AdapterLista.ProductosLis
             cbComprado.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    SQLiteHelper dbHelper= SQLiteHelper.getInstance(context);
+                    //este metodo va despues de la accion de chequear
+                    //si isChecked es true es que el producto no estaba comprado
+                    if(cbComprado.isChecked()){
+                        dbHelper.marcarDesmarcarProducto(productoLista,true);
+                    }else {
+                        dbHelper.marcarDesmarcarProducto(productoLista,false);
 
+                    }
                 }
             });
         }

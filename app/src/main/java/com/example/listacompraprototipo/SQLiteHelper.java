@@ -160,6 +160,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 }while (c.moveToNext());
             }
         }
+        db.close();
         return true;
     }
 
@@ -176,15 +177,60 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return listas;
     }
 
-    public void addProductoLista(ProductoLista productoLista, ListaCompra listaCompra){
-        listaCompra.addProducto(productoLista);
+    public void addProductoLista(Producto producto, ListaCompra listaCompra){
+        boolean encontrado=false;
+        ProductoLista productoLista=null;
+
+       int contador=0;
+       while (!encontrado && contador<listaCompra.getProductos().size()){
+
+           ProductoLista pl=listaCompra.getProductos().get(contador);
+           if(pl.getProducto().equals(producto)){
+               productoLista=pl;
+               encontrado=true;
+           }
+           contador++;
+       }
         SQLiteDatabase db=getWritableDatabase();
-        ContentValues nuevoItem=new ContentValues();
-        nuevoItem.put("id",productoLista.getId());
-        nuevoItem.put("producto",productoLista.getProducto().getNombre());
-        nuevoItem.put("idLista",listaCompra.getId());
-        nuevoItem.put("cantidad",productoLista.getCantidad());
-        nuevoItem.put("comprado",productoLista.isComprado());
-        db.insert("ItemsListaCompra",null,nuevoItem);
+       if(encontrado){
+           //update
+           modificarCantidadProductoDB(productoLista,1);
+       }else {
+           productoLista=new ProductoLista(producto);
+
+           ContentValues nuevoItem=new ContentValues();
+           nuevoItem.put("id",productoLista.getId());
+           nuevoItem.put("producto",productoLista.getProducto().getNombre());
+           nuevoItem.put("idLista",listaCompra.getId());
+           nuevoItem.put("cantidad",productoLista.getCantidad());
+           nuevoItem.put("comprado",productoLista.isComprado());
+           db.insert("ItemsListaCompra",null,nuevoItem);
+           listaCompra.addProducto(productoLista);
+           db.close();
+       }
+
+
     }
+    public void modificarCantidadProductoDB(ProductoLista productoLista,int sumaResta){
+        productoLista.setCantidad(productoLista.getCantidad()+sumaResta);
+        SQLiteDatabase db=getWritableDatabase();
+        ContentValues values =new ContentValues();
+        String[] args={String.valueOf(productoLista.getId())};
+        values.put("cantidad",productoLista.getCantidad());
+        db.update("ItemsListaCompra",values,"id=?",args);
+        db.close();
+
+    }
+
+    public void marcarDesmarcarProducto(ProductoLista productoLista,boolean marcar){
+        productoLista.setComprado(marcar);
+        SQLiteDatabase db=getWritableDatabase();
+        ContentValues values =new ContentValues();
+        String[] args={String.valueOf(productoLista.getId())};
+        values.put("comprado",productoLista.isComprado());
+        db.update("ItemsListaCompra",values,"id=?",args);
+        db.close();
+
+    }
+
 }
