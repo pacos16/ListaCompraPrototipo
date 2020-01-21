@@ -16,6 +16,8 @@ import com.example.listacompraprototipo.R;
 import com.example.listacompraprototipo.SQLiteHelper;
 import com.example.listacompraprototipo.model.ListaCompra;
 import com.example.listacompraprototipo.model.Producto;
+import com.example.listacompraprototipo.model.ProductoAux;
+import com.example.listacompraprototipo.model.ProductoLista;
 
 import java.util.ArrayList;
 
@@ -25,10 +27,12 @@ public class FragmentProductos extends Fragment implements IProductoListener{
     private ListaCompra listaCompra;
     private RecyclerView rvProductos;
     private AdapterProductos adapterProductos;
+    private ArrayList<ProductoAux> productosAux;
 
     public FragmentProductos(ArrayList<Producto> productos, ListaCompra listaCompra) {
         this.productos = productos;
         this.listaCompra = listaCompra;
+
     }
 
     @Nullable
@@ -48,7 +52,27 @@ public class FragmentProductos extends Fragment implements IProductoListener{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         rvProductos=getActivity().findViewById(R.id.rvProductos);
-        adapterProductos=new AdapterProductos(productos,this);
+        productosAux=new ArrayList<>();
+        ProductoLista productoLista;
+        for (int i=0;i<productos.size();i++
+             ) {
+            productoLista=null;
+            for (ProductoLista pl:listaCompra.getProductos()
+                 ) {
+                if (pl.getNombre().equals(productos.get(i).getNombre())){
+                    productoLista=pl;
+                }
+            }
+
+            if(productoLista==null){
+                productosAux.add(new ProductoAux(productos.get(i),0));
+            }else {
+                productosAux.add(new ProductoAux(productos.get(i),productoLista.getCantidad()));
+            }
+
+        }
+
+        adapterProductos=new AdapterProductos(productosAux,this);
         LinearLayoutManager layoutManager=new LinearLayoutManager
                 (this.getContext(),LinearLayoutManager.VERTICAL,false);
         DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(rvProductos.getContext(),
@@ -67,6 +91,9 @@ public class FragmentProductos extends Fragment implements IProductoListener{
      SQLiteHelper.getInstance(this.getContext())
              .addProductoLista(productos.get(posicion),listaCompra);
 
+
+
     }
+
 }
 

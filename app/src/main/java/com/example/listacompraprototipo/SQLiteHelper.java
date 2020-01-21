@@ -34,7 +34,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String[] INSERT_CATEGORIAS ={"INSERT INTO Categorias (Nombre, imagen) VALUES ('Quesos', 0x1F9C0 );" ,
             "INSERT INTO Categorias (Nombre, imagen) VALUES ('Carnes y aves',0x1F357 );" ,
             "INSERT INTO Categorias (Nombre, imagen) VALUES ('Frutas y vegetales', 0x1F34E);" ,
-            "INSERT INTO Categorias (Nombre, imagen) VALUES ('Otros', 0x1F3F7);\n" ,
+            "INSERT INTO Categorias (Nombre, imagen) VALUES ('Otros', 0x1F3F7);" ,
             "INSERT INTO Categorias (Nombre, imagen) VALUES ('Pescado', 0x1F41F);"};
 
     private static final String[] INSERT_PRODUCTOS ={"INSERT INTO Productos (nombre, categoria, image) VALUES ('Emperador', 'Pescado', NULL);" ,
@@ -44,7 +44,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             "INSERT INTO Productos (nombre, categoria, image) VALUES ('Atun', 'Pescado', NULL);" ,
             "INSERT INTO Productos (nombre, categoria, image) VALUES ('Pollo', 'Carnes y aves', NULL);" ,
             "INSERT INTO Productos (nombre, categoria, image) VALUES ('Queso de cabra', 'Quesos', NULL);" ,
-            "INSERT INTO Productos (nombre, categoria, image) VALUES ('Tomates', 'Frutas y vegetales', NULL);"};
+            "INSERT INTO Productos (nombre, categoria, image) VALUES ('Tomates', 'Frutas y vegetales', NULL);",
+            "INSERT INTO Productos (nombre, categoria, image) VALUES ('Fuego Facil', 'Otros', NULL);",
+            "INSERT INTO Productos (nombre, categoria, image) VALUES ('Naranjas', 'Frutas y vegetales', NULL);",
+            "INSERT INTO Productos (nombre, categoria, image) VALUES ('Pasta de Dientes', 'Otros', NULL);"
+    };
     private static final String INSERT_LISTAS ="INSERT INTO ListasCompra (id, nombre) VALUES (1, 'Mi Primera Lista');";
     private static final String[] INSERT_ITEM_LISTAS={"INSERT INTO ItemsListaCompra (id, producto, idLista, cantidad, comprado) VALUES (1, 'Tomates', 1, 1, 'true');" ,
             "INSERT INTO ItemsListaCompra (id, producto, idLista, cantidad, comprado) VALUES (2, 'Ternera', 1, 2, 'false');"};
@@ -231,6 +235,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.update("ItemsListaCompra",values,"id=?",args);
         db.close();
 
+    }
+
+    public ArrayList<Producto> getProductosFromCategoria(Categoria categoria){
+
+        return null;
     }
 
 }
