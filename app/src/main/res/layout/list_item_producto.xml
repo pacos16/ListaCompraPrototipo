@@ -31,7 +31,7 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tvAñadidoCantidad"
+            android:id="@+id/tvAnyadidoCantidad"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="20"
@@ -40,7 +40,7 @@
         <ImageView
             android:id="@+id/ivRemoveProd"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="15"
             app:srcCompat="@drawable/baseline_remove_black_18dp" />

@@ -242,4 +242,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return null;
     }
 
+    public void removeProducto(Producto p,ListaCompra listaCompra){
+
+    }
+
 }

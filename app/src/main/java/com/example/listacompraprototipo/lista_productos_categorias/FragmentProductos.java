@@ -21,7 +21,7 @@ import com.example.listacompraprototipo.model.ProductoLista;
 
 import java.util.ArrayList;
 
-public class FragmentProductos extends Fragment implements IProductoListener{
+public class FragmentProductos extends Fragment implements IAddProductoListener,IRemoveProductoListener {
 
     private ArrayList<Producto> productos;
     private ListaCompra listaCompra;
@@ -72,7 +72,7 @@ public class FragmentProductos extends Fragment implements IProductoListener{
 
         }
 
-        adapterProductos=new AdapterProductos(productosAux,this);
+        adapterProductos=new AdapterProductos(productosAux,this,this);
         LinearLayoutManager layoutManager=new LinearLayoutManager
                 (this.getContext(),LinearLayoutManager.VERTICAL,false);
         DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(rvProductos.getContext(),
@@ -85,15 +85,17 @@ public class FragmentProductos extends Fragment implements IProductoListener{
     }
 
     @Override
-    public void onProductoSelecionado(int posicion) {
+    public void onProductoSelecionado(Producto producto) {
 
 
      SQLiteHelper.getInstance(this.getContext())
-             .addProductoLista(productos.get(posicion),listaCompra);
-
-
+             .addProductoLista(producto,listaCompra);
 
     }
 
+    @Override
+    public void onRemoveProducto(Producto p) {
+
+    }
 }
 
