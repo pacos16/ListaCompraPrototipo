@@ -85,7 +85,11 @@ public class AdapterProductos extends RecyclerView.Adapter<AdapterProductos.Prod
                 public void onClick(View v) {
                     if(productos.get(position).getCantidad()>0) {
                         listenerRemove.onRemoveProducto(productos.get(position));
+                    }else {
+                        ivRemove.setEnabled(false);
+                        ivRemove.setVisibility(View.INVISIBLE);
                     }
+                    notifyDataSetChanged();
                 }
             });
 

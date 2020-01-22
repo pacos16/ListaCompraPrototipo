@@ -271,26 +271,43 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         return null;
     }
-    /*
-    public void removeProducto(ProductoAux p, ListaCompra listaCompra){
+
+    public void removeProducto(ProductoLista p,ListaCompra listaCompra){
+
+        ProductoLista productoLista=null;
+        for (ProductoLista pl:listaCompra.getProductos()
+             ) {
+            if(pl.getNombre().equals(p.getNombre())&&
+                    pl.getCategoria().equals(p.getCategoria())){
+                productoLista=pl;
+
+            }
+        }
+
+
+        String[] args={String.valueOf(productoLista.getId())};
+        SQLiteDatabase db=getWritableDatabase();
+
         //caso update
-        if(p.getCantidad()>1){
-                p.setCantidad(p.getCantidad()-1);
-            SQLiteDatabase db=getWritableDatabase();
+        if(productoLista.getCantidad()>1){
+                productoLista.setCantidad(productoLista.getCantidad()-1);
+                p.setCantidad(productoLista.getCantidad());
             ContentValues values =new ContentValues();
-            String[] args={String.valueOf(productoLista.getId())};
-            values.put("comprado",productoLista.isComprado());
+            values.put("cantidad",productoLista.getCantidad());
             db.update("ItemsListaCompra",values,"id=?",args);
-            db.close();
 
         //caso remove
-        } else if( p.getCantidad()==1){
+        } else if( productoLista.getCantidad()==1){
+            productoLista.setCantidad(0);
+            listaCompra.removeProducto(productoLista);
+            db.delete("ItemsListaCompra","id=?",args);
             p.setCantidad(0);
 
         }
 
+        db.close();
     }
 
-     */
+
 
 }

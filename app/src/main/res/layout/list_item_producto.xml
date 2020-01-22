@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:weightSum="100">
 
         <TextView
@@ -27,14 +27,14 @@
             android:id="@+id/tvNombreProd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
+            android:layout_weight="65"
             android:textSize="24sp" />
 
         <TextView
             android:id="@+id/tvAnyadidoCantidad"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
+            android:layout_weight="10"
             android:textSize="18sp" />
 
         <ImageView
@@ -42,7 +42,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="15"
+            android:layout_weight="10"
             app:srcCompat="@drawable/baseline_remove_black_18dp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

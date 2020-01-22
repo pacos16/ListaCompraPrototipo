@@ -95,7 +95,9 @@ public class FragmentProductos extends Fragment implements IAddProductoListener,
 
     @Override
     public void onRemoveProducto(ProductoLista productoLista) {
-
+        SQLiteHelper.getInstance(this.getContext())
+                .removeProducto(productoLista,listaCompra);
+        adapterProductos.notifyDataSetChanged();
     }
 }
 

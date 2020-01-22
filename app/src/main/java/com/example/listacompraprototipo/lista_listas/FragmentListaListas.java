@@ -24,6 +24,7 @@ public class FragmentListaListas extends Fragment implements IListaListener {
     public static final String POSICION_LISTA="com.pacosignes.posicionlista";
     private ArrayList<ListaCompra> listasCompra;
     private RecyclerView recyclerViewListas;
+    private AdapterListaListas adapterListaListas;
 
     @Nullable
     @Override
@@ -37,7 +38,7 @@ public class FragmentListaListas extends Fragment implements IListaListener {
         SQLiteHelper helper= SQLiteHelper.getInstance(getContext());
         recyclerViewListas=getActivity().findViewById(R.id.rvListas);
         listasCompra=helper.getListas();
-        AdapterListaListas adapterListaListas =new AdapterListaListas(getActivity(),listasCompra,this);
+        adapterListaListas =new AdapterListaListas(getActivity(),listasCompra,this);
         recyclerViewListas.setAdapter(adapterListaListas);
         LinearLayoutManager layoutManager=new LinearLayoutManager
                 (this.getContext(),LinearLayoutManager.VERTICAL,false);
@@ -54,5 +55,11 @@ public class FragmentListaListas extends Fragment implements IListaListener {
         Intent i=new Intent(getContext(), ListActivity.class);
         i.putExtra(POSICION_LISTA,posicion);
         startActivity(i);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapterListaListas.notifyDataSetChanged();
     }
 }
